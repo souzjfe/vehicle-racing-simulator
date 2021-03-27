@@ -1,4 +1,4 @@
-package vehicles;
+package simulator;
 
 public class IdList {
   private int amountIds = 0;
@@ -12,13 +12,27 @@ public class IdList {
     return vehiclesIds;
   }
 
-  public void add(int Id) {
+  /**
+   * This function adds a id to the list
+   * 
+   * @param Id id to check if it's in the list
+   * @return true or false, acording of function succes
+   */
+  public boolean add(int Id) {
     if (amountIds < 20) {
       this.vehiclesIds[amountIds] = Id;
       setAmountIds(amountIds + 1);
+      return true;
     }
+    return false;
   }
 
+  /**
+   * This function checks whether the array contains the id
+   * 
+   * @param Id id to search on array
+   * @return true or false, acording of function succes
+   */
   public boolean contains(int Id) {
     for (int i = 0; i < this.vehiclesIds.length; i++) {
       if (Id == this.vehiclesIds[i]) {
@@ -27,9 +41,11 @@ public class IdList {
     }
     return false;
   }
+
   /**
    * This function search the id on list of vehicles ids
-   * @param Id id for search on array 
+   * 
+   * @param Id id to search on array
    * @return the index of wanted id
    */
   public int indexOf(int Id) {
@@ -42,11 +58,20 @@ public class IdList {
 
   }
 
-  public void remove(int Id) {
+  /**
+   * This function remove the id entered in the parameter
+   * 
+   * @param Id id to search on array
+   * @return true or false, acording of function succes
+   */
+  public boolean remove(int Id) {
     int index = indexOf(Id);
+    if (index >= 0) {
 
-    for (; index < vehiclesIds.length; index++) {
-      vehiclesIds[index] = vehiclesIds[index + 1];
+      this.vehiclesIds[index] = 0;
+      return true;
+    } else {
+      return false;
     }
 
   }
