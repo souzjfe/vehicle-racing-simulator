@@ -38,4 +38,8 @@ public class Wheel {
     public void setCalibrated(boolean calibrated) {
         this.calibrated = calibrated;
     }
+    public String toString() {
+        
+        return (this.calibrated? "Calibrada": "Descalibrada");
+    }
 }

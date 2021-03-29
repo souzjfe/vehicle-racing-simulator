@@ -1,12 +1,7 @@
 package simulator;
 
 public class IdList {
-  private int amountIds = 0;
-  private int[] vehiclesIds = new int[20];
-
-  private void setAmountIds(int amountIds) {
-    this.amountIds = amountIds;
-  }
+  private int[] vehiclesIds;
 
   public int[] getVehiclesIds() {
     return vehiclesIds;
@@ -19,12 +14,23 @@ public class IdList {
    * @return true or false, acording of function succes
    */
   public boolean add(int Id) {
-    if (amountIds < 20) {
-      this.vehiclesIds[amountIds] = Id;
-      setAmountIds(amountIds + 1);
+    if (this.vehiclesIds == null) {
+      this.vehiclesIds = new int[1];
+      this.vehiclesIds[0] = Id;
       return true;
+    } else {
+      int[] newListId = new int[this.vehiclesIds.length + 1];
+      int i;
+      for (i = 0; i < this.vehiclesIds.length; i++) {
+        newListId[i] = this.vehiclesIds[i];
+      }
+      if (i < 20) {
+        newListId[i] = Id;
+        this.vehiclesIds = newListId;
+        return true;
+      } else
+        return false;
     }
-    return false;
   }
 
   /**
@@ -34,9 +40,12 @@ public class IdList {
    * @return true or false, acording of function succes
    */
   public boolean contains(int Id) {
-    for (int i = 0; i < this.vehiclesIds.length; i++) {
-      if (Id == this.vehiclesIds[i]) {
-        return true;
+    if (this.vehiclesIds != null) {
+
+      for (int vehicleId : this.vehiclesIds) {
+        if (Id == vehicleId) {
+          return true;
+        }
       }
     }
     return false;
@@ -65,13 +74,24 @@ public class IdList {
    * @return true or false, acording of function succes
    */
   public boolean remove(int Id) {
-    int index = indexOf(Id);
-    if (index >= 0) {
-
-      this.vehiclesIds[index] = 0;
-      return true;
-    } else {
+    if (this.vehiclesIds == null) {
       return false;
+    } else {
+      int index = indexOf(Id);
+      if (index >= 0) {
+        int[] newListId = new int[this.vehiclesIds.length - 1];
+        int i;
+        for (i = 0; i < index; i++) {
+          newListId[i] = this.vehiclesIds[i];
+        }
+        for (; index < this.vehiclesIds.length - 1; index++) {
+          newListId[index] = this.vehiclesIds[index + 1];
+        }
+        this.vehiclesIds = newListId;
+        return true;
+      } else {
+        return false;
+      }
     }
 
   }

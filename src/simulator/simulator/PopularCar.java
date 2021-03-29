@@ -16,12 +16,6 @@ public final class PopularCar {
     //Quantidade de blocos que o carro andou
     private int runned;
 
-    public static void raceLap(PopularCar[] popularCars) {
-        for(int i = 0; i < popularCars.length; i++) {
-            popularCars[i].printVehicle(i);
-        }
-    }
-
     /**
      * This method sets the gasAount in th e vehicle object to the maximum
      * (tankCapacity) Esse método define o gasAmount no objeto veículo para o máximo
@@ -164,7 +158,21 @@ public final class PopularCar {
         this.wheels[indexWheel].decalibrate() ;
         return true;
     }
-
+// Função para descalibrar um pneu
+    /**
+     * This method decalibrates all wheels (sets the wheel.calibrated false)
+     * Esse método descalibra todas as rodas (define wheel.calibrated false)
+     * @return true if the wheel was sucefully decalibrated (true se a roda for descalibrada)
+     */
+    public boolean decalibrateWheel() {
+        
+        // Percorre o vetor das rodas descalibradas e descalibra todas elas
+        for (Wheel wheel : this.wheels) {
+            // Chama a função descalibrate da classe Wheel
+            wheel.decalibrate();
+        }
+        return true;
+    }
     // Função para imprimir o carro na tela
     /**
      * This method verifies if the vehicle is able or isn't able to run
@@ -172,20 +180,17 @@ public final class PopularCar {
      * @return true if it's able, false if it isn't able to run (true se está pronto, false se não estiver)
      */
     public boolean isAbleToRun() {
-        // Verifica se há alguma roda descalibrada
+        // Verifica se há alguma roda descalibrada{}
         for (Wheel i : this.wheels)
             // Se encontrar alguma roda descalibrata, retorna falso
             if (!i.isCalibrated())
                 return false;
-
         // Se o IPVA não estiver pago, retorna falso
         if (!this.paidIPVA)
             return false;
-
         // Se o carro não tiver combustivel, retorna falso
         if (this.gasAmount == 0)
             return false;
-
         // Se o carro estiver pronto para correr, retorna true
         return true;
     }
@@ -259,10 +264,9 @@ public final class PopularCar {
             Random rand = new Random();
             // Recebe aleatóriamente um valor e o transforma em um id de 5 dígitos
             this.id = 10000 + rand.nextInt(90000);
-        } while (idList.contains(this.getId())); // Verificar se o valor já está na lista de IDs
-
+        } while (idList.contains(this.id)); // Verificar se o valor já está na lista de IDs
         // Adiciona o id dentro da lista de IDs
-        idList.add(this.getId());
+        idList.add(this.id);
     }
 
     // Getter para as rodas do carro
@@ -318,9 +322,9 @@ public final class PopularCar {
 
     // Método para passar todos os dados do objeto da classe Popularcar para string
     public String toString() {
-        return "Id: " + this.id + "\n" + "Calibragem das rodas: 0: " + this.wheels[0].isCalibrated() + " 1: "
-                + this.wheels[1].isCalibrated() + " 2: " + this.wheels[2].isCalibrated() + " 3: "
-                + this.wheels[3].isCalibrated() + "\n" + "O IPVA está pago? " + (this.paidIPVA ? "Sim" : "Não")
+        return "Id: " + this.id + "\n" + "Calibragem das rodas: 0: " + this.wheels[0].toString() + " 1: "
+                + this.wheels[1].toString() + " 2: " + this.wheels[2].toString() + " 3: "
+                + this.wheels[3].toString() + "\n" + "O IPVA está pago? " + (this.paidIPVA ? "Sim" : "Não")
                 + "\n" + "Quantidade de gasolina no tanque: " + this.gasAmount + "L\n" + "Capacidade do tanque: "
                 + this.tankCapacity + "L\n" + "Blocos de texto andados: " + runned;
     }

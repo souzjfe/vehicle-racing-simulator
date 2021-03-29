@@ -2,9 +2,6 @@ package simulator;
 
 import java.util.Scanner;
 
-/**
- * 
- */
 public class Menu {
   private static Scanner scan = new Scanner(System.in);
   private static VehiclesList vehicles = new VehiclesList();
@@ -30,22 +27,55 @@ public class Menu {
 
   public void includeVehicle() {
     int tankCapacity;
+    int amountVehicles;
+    int vechiclesLength = vehicles.getVehicles() != null ? vehicles.getVehicles().length : 0;
     do {
-      System.out.println("Informe a capacidade em litros no tanque:");
-      tankCapacity = scan.nextInt();
-      if (tankCapacity > 0) {
-        System.out.println(vehicles.add(tankCapacity, vehiclesIds) ? "Veículo adicionado com sucesso"
-            : "Já foi inserido 20 veículos, infelizmente não há mais espaço.");
-      } else {
-        System.out.println("Informe uma capacidade positiva!");
+      System.out.println("Informe quantos veículos deseja incluir");
+      amountVehicles = scan.nextInt();
+      if (amountVehicles + vechiclesLength > 20) {
+        char option;
+        do {
+          System.out.printf("A quantidade ultrapassa o limite permitido (20)\nDeseja incluir %d veículos? s/N",
+              20 - vechiclesLength);
+          option = scan.next().charAt(0);
+          if (option == 's') {
+            amountVehicles = 20 - vechiclesLength;
+          } else if (option == 'n') {
+            System.out.println("Nenhum veículo incluido.");
+          } else {
+            System.out.println("Informe uma opção valida! (N para não ou S para sim)");
+          }
+        } while (option != 's' && option != 'n');
+      } else if (amountVehicles < 0) {
+        System.out.println("Informe uma quantidade positiva!");
       }
-    } while (tankCapacity <= 0);
+    } while (amountVehicles < 0 || amountVehicles + vechiclesLength > 20);
+    if (amountVehicles + vechiclesLength <= 20) {
+      do {
+        System.out.println("Informe a capacidade em litros no tanque:");
+        tankCapacity = scan.nextInt();
+        if (tankCapacity > 0) {
+          if (amountVehicles > 1) {
+            System.out
+                .println(vehicles.add(tankCapacity, vehiclesIds, amountVehicles) ? "Veículos adicionados com sucesso"
+                    : "Occoreu um erro ao incluir");
+          } else {
+            System.out.println(vehicles.add(tankCapacity, vehiclesIds) ? "Veículo adicionado com sucesso"
+                : "Occoreu um erro ao incluir");
+          }
+        } else {
+          System.out.println("Informe uma capacidade positiva!");
+        }
+      } while (tankCapacity <= 0);
+    }
   }
 
   public void removeVehicle() {
     int Id = requestVehicleId();
     if (vehiclesIds.remove(Id)) {
       System.out.println(vehicles.remove(Id) ? "Veículo removido com sucesso." : "Ocorreu um erro ao remover.");
+    } else {
+      System.out.println("ocorreu um erro ao remover o Id. Veículo não foi removido.");
     }
 
   }
@@ -65,7 +95,6 @@ public class Menu {
             "A quantidade informada excede a capacidade no tanque. Deseja completar com %.2f litros? (s/N)",
             tankCapacity - currentGasAmout);
         option = scan.next().charAt(0);
-        System.out.println(option);
         if (option == 's') {
           System.out.println(vehicle.fuel() ? "Veículo abastecido com sucesso"
               : "Occoreu um erro durante o abastecimento. Tente novamente mais tarde.");
@@ -102,7 +131,7 @@ public class Menu {
     int Id = requestVehicleId();
     PopularCar vehicle = vehicles.searchById(Id);
     System.out.println(
-        "Qual das rodas deseja descalibrar\n0 para dianteira direita\n1 pra dianteira esquerda\n2 para traseira direita\n3 para traseira esquerda\n");
+        "Qual das rodas deseja descalibrar\n0 para dianteira direita\n1 pra dianteira esquerda\n2 para traseira direita\n3 para traseira esquerda\n4 para todas");
     int wheelIndex = scan.nextInt();
     System.out.println(
         vehicle.decalibrateWheel(wheelIndex) ? "Roda descalibrada com successo" : "Houve uma falha ao descalibrar!");
@@ -113,21 +142,17 @@ public class Menu {
     int Id = requestVehicleId();
     PopularCar vehicle = vehicles.searchById(Id);
     System.out.println(
-        "Qual das rodas deseja calibrar\n0 para dianteira direita\n1 pra dianteira esquerda\n2 para traseira direita\n3 para traseira esquerda\n");
+        "Qual das rodas deseja calibrar\n0 para dianteira direita\n1 pra dianteira esquerda\n2 para traseira direita\n3 para traseira esquerda\n4 para todas");
     int wheelIndex = scan.nextInt();
-    System.out
-        .println(vehicle.calibrateWheel(wheelIndex) ? "Roda calibrada com successo" : "Houve uma falha ao calibrar!");
+    System.out.println(vehicle.calibrateWheel(wheelIndex <= 3 ? wheelIndex : null) ? "Roda calibrada com successo"
+        : "Houve uma falha ao calibrar!");
 
   }
 
   public void calibrateAllVeihiclesWheels() {
     for (PopularCar vehicle : vehicles.getVehicles()) {
-      if (vehicle != null) {
-        for (int wheelIndex = 0; wheelIndex <= 3; wheelIndex++) {
-          if (!vehicle.calibrateWheel(wheelIndex)) {
-            System.out.printf("Occoreu um erro ao calibar a roda %d do carro com id %d", wheelIndex, vehicle.getId());
-          }
-        }
+      if (!vehicle.calibrateWheel()) {
+        System.out.printf("Occoreu um erro ao calibar o carro com id %d", vehicle.getId());
       }
     }
     System.out.println("Efetuado a calibragem de todos os veículos");
@@ -138,19 +163,25 @@ public class Menu {
    * This function lists all vehicle information
    */
   public void listVehicles() {
-
-    for (PopularCar vehicle : vehicles.getVehicles()) {
-      if (vehicle != null) {
+    PopularCar[] vehiclesArray = vehicles.getVehicles();
+    if (vehiclesArray.length > 0) {
+      for (PopularCar vehicle : vehiclesArray) {
         System.out.printf("\n\nApresentando veículo de id %d\n", vehicle.getId());
         System.out.println(vehicle.toString());
       }
+    } else {
+      System.out.println("Nenhum veículo existente para ser exibido.");
     }
   }
 
   public void showVehicles() {
-    PopularCar[] veihiclesArray = vehicles.getVehicles();
-    for (int i = 0; i < veihiclesArray.length && veihiclesArray[i] != null; i++) {
-      veihiclesArray[i].printVehicle(i);
+    PopularCar[] vehiclesArray = vehicles.getVehicles();
+    if (vehiclesArray.length > 0) {
+      for (int i = 0; i < vehiclesArray.length; i++) {
+        vehiclesArray[i].printVehicle(i);
+      }
+    } else {
+      System.out.println("Nenhum veículo existente para ser exibido.");
     }
   }
 }
