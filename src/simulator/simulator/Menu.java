@@ -37,7 +37,7 @@ public class Menu {
         do {
           System.out.printf("A quantidade ultrapassa o limite permitido (20)\nDeseja incluir %d veículos? s/N",
               20 - vechiclesLength);
-          option = scan.next().charAt(0);
+          option = scan.next().toLowerCase().charAt(0);
           if (option == 's') {
             amountVehicles = 20 - vechiclesLength;
           } else if (option == 'n') {
@@ -86,28 +86,84 @@ public class Menu {
     PopularCar vehicle = vehicles.searchById(Id);
     double currentGasAmout = vehicle.getGasAmount();
     double tankCapacity = vehicle.getTankCapacity();
-    System.out.printf("Há %.2f litros no tanque. Informa a quantia de combustível para abastecer: ", currentGasAmout);
-    double loaderGasAmount = scan.nextDouble();
-    if (loaderGasAmount + currentGasAmout > tankCapacity) {
-      char option;
-      do {
-        System.out.printf(
-            "A quantidade informada excede a capacidade no tanque. Deseja completar com %.2f litros? (s/N)",
-            tankCapacity - currentGasAmout);
-        option = scan.next().charAt(0);
-        if (option == 's') {
-          System.out.println(vehicle.fuel() ? "Veículo abastecido com sucesso"
+    
+    char fuelOption;
+    do {
+      System.out.printf(
+          "Há %.2f litros no tanque. Informe a forma de abastecimento:\n C para completo\n P para informar em porcentagem\n L para informar em litros \n:",
+          currentGasAmout);
+      fuelOption = scan.next().toLowerCase().charAt(0);
+      if (fuelOption == 'c') {
+        System.out.println(vehicle.fuel() ? "Veículo abastecido com sucesso"
+            : "Occoreu um erro durante o abastecimento. Tente novamente mais tarde.");
+      } else if (fuelOption == 'p') {
+        int gasPercent;
+        do {
+          System.out.println("Informe a porcentagem do tanque que deve ser abastecida:");
+          gasPercent = scan.nextInt();
+          if (gasPercent < 0) {
+            System.out.println("Porcentagem deve ser positiva!");
+          } else if (gasPercent > 100) {
+            System.out.println("Não eh possivel abastecer mais que 100%");
+          } else {
+            if(gasPercent / 100 * tankCapacity + currentGasAmout > tankCapacity){
+              char option;
+              do {
+                System.out.printf(
+                    "A quantidade informada excede a capacidade no tanque. Deseja completar com %.2f litros? (s/N)",
+                    tankCapacity - currentGasAmout);
+                option = scan.next().toLowerCase().charAt(0);
+                if (option == 's') {
+                  System.out.println(vehicle.fuel() ? "Veículo abastecido com sucesso"
+                      : "Occoreu um erro durante o abastecimento. Tente novamente mais tarde.");
+                } else if (option == 'n') {
+                  System.out.println("O véiculo não foi abastecido!");
+                } else {
+                  System.out.println("Informe uma opção valida! (N para não ou S para sim)");
+                }
+              } while (option != 's' && option != 'n');
+            }
+            else{
+              System.out.println(vehicle.fuel(gasPercent)? "Veículo abastecido com sucesso"
               : "Occoreu um erro durante o abastecimento. Tente novamente mais tarde.");
-        } else if (option == 'n') {
-          System.out.println("O véiculo não foi abastecido!");
-        } else {
-          System.out.println("Informe uma opção valida! (N para não ou S para sim)");
-        }
-      } while (option != 's' && option != 'n');
+            }
+          }
 
-    }
-    vehicle.fuel(loaderGasAmount + currentGasAmout > tankCapacity ? tankCapacity - currentGasAmout : loaderGasAmount);
-    System.out.println("Volte sempre!");
+        } while (gasPercent < 0 || gasPercent > 100);
+
+      } else if (fuelOption == 'l') {
+        System.out.println("Informe a quantia em litros do tanque que deve ser abastecida:");
+        double gasAmount = scan.nextDouble();
+        if (gasAmount + currentGasAmout > tankCapacity) {
+          char option;
+          do {
+            System.out.printf(
+                "A quantidade informada excede a capacidade no tanque. Deseja completar com %.2f litros? (s/N)",
+                tankCapacity - currentGasAmout);
+            option = scan.next().toLowerCase().charAt(0);
+            if (option == 's') {
+              System.out.println(vehicle.fuel() ? "Veículo abastecido com sucesso"
+                  : "Occoreu um erro durante o abastecimento. Tente novamente mais tarde.");
+            } else if (option == 'n') {
+              System.out.println("O véiculo não foi abastecido!");
+            } else {
+              System.out.println("Informe uma opção valida! (N para não ou S para sim)");
+            }
+          } while (option != 's' && option != 'n');
+
+        } else {
+          System.out.println(vehicle.fuel(gasAmount)? "Veículo abastecido com sucesso"
+          : "Occoreu um erro durante o abastecimento. Tente novamente mais tarde.");
+          
+        }
+        System.out.println("Volte sempre!");
+      }
+
+      else {
+        System.out.println("Informe uma opção valida!");
+      }
+    } while (fuelOption != 'c' && fuelOption != 'p' && fuelOption != 'l');
+
   }
 
   public void runVehicle() {
