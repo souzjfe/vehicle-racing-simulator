@@ -1,3 +1,8 @@
+
+//Trabalho dos alunos Jefeson Souza e Luiz Henrique Vicari
+
+//A ideia dessa classe e substitur o uso de ArrayList
+
 package simulator;
 
 public class IdList {
@@ -8,10 +13,11 @@ public class IdList {
   }
 
   /**
-   * This function adds a id to the list
+   * This method adds a id to the list
+   * Adiciona um id na lista
    * 
-   * @param Id id to check if it's in the list
-   * @return true or false, acording of function succes
+   * @param Id id to check if it's in the list (checa se o id já está n alista)
+   * @return true or false, acording of function succes (true ou false se funcionou ou não)
    */
   public boolean add(int Id) {
     if (this.vehiclesIds == null) {
@@ -34,10 +40,11 @@ public class IdList {
   }
 
   /**
-   * This function checks whether the array contains the id
+   * This method checks whether the array contains the id
+   * Verifica se o array contém o id
    * 
-   * @param Id id to search on array
-   * @return true or false, acording of function succes
+   * @param Id id to search on array (id que será buscado no array)
+   * @return true or false, acording of function succes (true ou false se funcionou ou não)
    */
   public boolean contains(int Id) {
     if (this.vehiclesIds != null) {
@@ -52,10 +59,11 @@ public class IdList {
   }
 
   /**
-   * This function search the id on list of vehicles ids
+   * This method search the id on list of vehicles ids
+   * Procura o id na lista de ids
    * 
-   * @param Id id to search on array
-   * @return the index of wanted id
+   * @param Id id to search on array (id que será buscado)
+   * @return the index of wanted id (a posição do id)
    */
   public int indexOf(int Id) {
     for (int i = 0; i < this.vehiclesIds.length; i++) {
@@ -68,10 +76,11 @@ public class IdList {
   }
 
   /**
-   * This function remove the id entered in the parameter
+   * This method remove the id entered in the parameter
+   * Remove um id no array
    * 
-   * @param Id id to search on array
-   * @return true or false, acording of function succes
+   * @param Id id to search on array (id que será removido)
+   * @return true or false, acording of function succes (true ou false se funcionou ou não)
    */
   public boolean remove(int Id) {
     if (this.vehiclesIds == null) {

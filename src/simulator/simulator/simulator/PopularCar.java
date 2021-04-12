@@ -1,3 +1,5 @@
+//Trabalho dos alunos Jefeson Souza e Luiz Henrique Vicari
+
 package simulator;
 
 import java.util.Random;
@@ -275,7 +277,7 @@ public final class PopularCar {
     }
 
     // Setter para as rodas
-    private void setWheels(Wheel[] wheels) {
+    public void setWheels(Wheel[] wheels) {
         this.wheels = wheels;
     }
 
@@ -285,7 +287,7 @@ public final class PopularCar {
     }
 
     // Setter para a quantidade de gasolina no carro
-    private void setGasAmount(double gasAmount) {
+    public void setGasAmount(double gasAmount) {
         this.gasAmount = gasAmount;
     }
 
@@ -300,23 +302,23 @@ public final class PopularCar {
     }
 
     // Setter para definir aleatóriamente se o IPVA está pago ou não
-    private void setPaidIPVA() {
+    public void setPaidIPVA() {
         Random rand = new Random();
         this.paidIPVA = rand.nextBoolean();
     }
 
     // Setter para definir se o IPVA do carro está pago ou não
-    private void setPaidIPVA(boolean paidIPVA) {
+    public void setPaidIPVA(boolean paidIPVA) {
         this.paidIPVA = paidIPVA;
     }
 
     // Getter para a variável runned
-    private int getRunned() {
+    public int getRunned() {
         return this.runned;
     }
 
     // Setter para a variável runned
-    private void setRunned(int runned) {
+    public void setRunned(int runned) {
         this.runned = runned;
     }
 

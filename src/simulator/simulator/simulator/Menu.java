@@ -1,12 +1,16 @@
+
+//Trabalho dos alunos Jefeson Souza e Luiz Henrique Vicari
+
 package simulator;
 
 import java.util.Scanner;
 
-public class Simulador {
+
+public class Menu {
     static Scanner scan = new Scanner(System.in);
 
     public static void main(String[] args) {
-        Menu menu = new Menu();
+        Simulador simulador = new Simulador();
         int opcao = 0;
 
         do {
@@ -27,43 +31,43 @@ public class Simulador {
 
             switch (opcao) {
             case 1: {
-                menu.includeVehicle();
+                simulador.includeVehicle();
                 break;
             }
             case 2: {
-                menu.removeVehicle();
+                simulador.removeVehicle();
                 break;
             }
             case 3: {
-                menu.fuelVechicle();
+                simulador.fuelVechicle();
                 break;
             }
             case 4: {
-                menu.runVehicle();
+                simulador.runVehicle();
                 break;
             }
             case 5: {
-                menu.runVehicles();
+                simulador.runVehicles();
                 break;
             }
             case 6: {
-                menu.listVehicles();
+                simulador.listVehicles();
                 break;
             }
             case 7: {
-                menu.decalibrateWheel();
+                simulador.decalibrateWheel();
                 break;
             }
             case 8: {
-                menu.calibrateWheel();
+                simulador.calibrateWheel();
                 break;
             }
             case 9: {
-                menu.calibrateAllVeihiclesWheels();
+                simulador.calibrateAllVeihiclesWheels();
                 break;
             }
             case 10: {
-                menu.showVehicles();
+                simulador.showVehicles();
                 break;
             }
             case 11: {
@@ -80,3 +84,4 @@ public class Simulador {
         } while (opcao != 11);
     }
 }
+

@@ -1,3 +1,5 @@
+//Trabalho dos alunos Jefeson Souza e Luiz Henrique Vicari
+
 package simulator;
 
 public class VehiclesList {

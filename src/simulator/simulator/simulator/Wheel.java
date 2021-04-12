@@ -1,3 +1,5 @@
+//Trabalho dos alunos Jefeson Souza e Luiz Henrique Vicari
+
 package simulator;
 import java.util.Random;
 
@@ -43,3 +45,4 @@ public class Wheel {
         return (this.calibrated? "Calibrada": "Descalibrada");
     }
 }
+
